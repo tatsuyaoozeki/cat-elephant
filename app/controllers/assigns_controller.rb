@@ -1,7 +1,7 @@
 class AssignsController < ApplicationController
   before_action :authenticate_user!
   before_action :user, only: [:edit]
-  
+
   def create
     team = Team.friendly.find(params[:team_id])
     user = email_reliable?(assign_params) ? User.find_or_create_by_email(assign_params) : nil
@@ -31,7 +31,8 @@ class AssignsController < ApplicationController
       'リーダーは削除できません。'
     elsif Assign.where(user_id: assigned_user.id).count == 1
       'このユーザーはこのチームにしか所属していないため、削除できません。'
-    elsif assign.destroy
+    elsif  assigned_user == assign.team.users
+      assign.destroy
       set_next_team(assign, assigned_user)
       'メンバーを削除しました。'
     else
