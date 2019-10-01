@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
+    @user = User.find(params[:id]) == current_user.id
     @user.destroy
       redirect_to new_user_path, notice: 'ユーザを削除しました'
   end
