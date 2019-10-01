@@ -15,8 +15,10 @@ class TeamsController < ApplicationController
     @team = Team.new
   end
 
+  def edit;end
   def edit
-    if @team.owner.id != current_user.id
+    # チームの編集機能でオーナーかどうか判断する
+    if @team.owner_id != current_user.id
       redirect_to @team, notice: '編集の権限はありません'
     end
   end
