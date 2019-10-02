@@ -34,7 +34,7 @@
               <i class="fa fa-circle-o nav-icon"></i>
               <p>
                 <%= agenda.title %>
-                <% if current_user.id || @team.owner_id %>
+                <% if agenda.user_id == current_user.id || agenda.user_id == agenda.team.owner %>
                 <p style="margin-left: 15px;"><%= link_to '削除', agenda, method: :delete, data: { confirm: 'Are you sure?' } %></p>
                 <% end %>
                 <i class="right fa fa-angle-left" style="margin-left: 20px;"></i>
