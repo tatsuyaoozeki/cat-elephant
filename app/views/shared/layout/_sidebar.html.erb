@@ -34,7 +34,9 @@
               <i class="fa fa-circle-o nav-icon"></i>
               <p>
                 <%= agenda.title %>
-                <p style="margin-left: 15px;"><%= link_to '削除', new_agenda_article_path(agenda), method: :delete, data: { confirm: 'Are you sure?' } %></p>
+                <% if current_user.id || @team.owner_id %>
+                <p style="margin-left: 15px;"><%= link_to '削除', agenda, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+                <% end %>
                 <i class="right fa fa-angle-left" style="margin-left: 20px;"></i>
               </p>
             </span>
