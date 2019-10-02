@@ -53,6 +53,26 @@ class TeamsController < ApplicationController
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
   end
 
+  def  transfer_owner
+    @team = Team.friendly.find(params[:id])
+    if @team.owner.update(owner_id: params[:owner_id])
+      TeamMailer.contact_mail(@team).deliver
+      redirect_to @team, notice: '権限を委譲しました'
+    else
+      render :show, notice: 'オーナー権限を委譲できません'
+    end
+  end
+
+  def self.find_or_create_by_email(email)
+    user = find_or_initialize_by(email: email)
+    if user.new_record?
+      user.password = generate_password
+      user.save!
+      AssignMailer.assign_mail(user.email, user.password).deliver
+    end
+    user
+  end
+
   private
 
   def set_team

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     passwords: 'users/passwords'
   }
+
   resource :user
 
   resources :teams do
@@ -16,11 +17,13 @@ Rails.application.routes.draw do
         resources :comments
       end
     end
+    member do
+      patch 'tranfer_owner'
+    end
   end
 
-  member do
-    patch 'tranfer_owner'
-  end
+
+
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end
