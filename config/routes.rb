@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       end
     end
     member do
-      patch 'tranfer_owner'
+      patch 'transfer_owner'
     end
   end
 
