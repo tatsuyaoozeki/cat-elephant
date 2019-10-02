@@ -15,7 +15,13 @@ class TeamsController < ApplicationController
     @team = Team.new
   end
 
-  def edit; end
+  def edit;end
+  def edit
+    # チームの編集機能でオーナーかどうか判断する
+    if @team.owner_id != current_user.id
+      redirect_to @team, notice: '編集の権限はありません'
+    end
+  end
 
   def create
     @team = Team.new(team_params)
@@ -45,6 +51,16 @@ class TeamsController < ApplicationController
 
   def dashboard
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
+  end
+
+  def transfer_owner
+    @team = Team.find(params[:id])
+    if @team.update(owner_id: params[:owner_id])
+      TeamMailer.team_mail(@team).deliver
+      redirect_to @team, notice: '権限を委譲しました'
+    else
+      render :show, notice: 'オーナー権限を委譲できません'
+    end
   end
 
   private
